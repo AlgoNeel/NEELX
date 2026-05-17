@@ -1,537 +1,601 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEELX PRO | Institutional Grade Journal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>NEELX PIPS | Admin Control Terminal</title>
+    <!-- Premium SVG Favicon matching the modern candles logo -->
+    <link class="fav" rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%23090d16%22/><path d=%22M30 38v24M30 44h6v12h-6z%22 fill=%22%23ef4444%22 stroke=%22%23ef4444%22 stroke-width=%221.5%22/><path d=%22M50 25v50M50 32h6v36h-6z%22 fill=%22%2310b981%22 stroke=%22%2310b981%22 stroke-width=%221.5%22/><path d=%22M70 45v18M70 49h6v10h-6z%22 fill=%22%2310b981%22 stroke=%22%2310b981%22 stroke-width=%221.5%22/></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --brand-primary: #3b82f6;
-            --brand-accent: #6366f1;
-            --brand-success: #10b981;
-            --brand-danger: #f43f5e;
-            --bg-dark: #020617;
-            --bg-card: #0f172a;
-            --border-subtle: rgba(255, 255, 255, 0.08);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+        
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            background-color: #030712;
+            color: #f3f4f6;
             -webkit-tap-highlight-color: transparent;
-            overflow-x: hidden;
         }
 
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-
-        /* Premium Glass Effects */
-        .glass-card {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-subtle);
-            border-radius: 24px;
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        .glass-nav {
-            background: rgba(2, 6, 23, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border-subtle);
+        .premium-card {
+            background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(9, 13, 22, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
         }
 
-        /* Gradient Text */
-        .text-gradient {
-            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+
+        @keyframes pulse-radial {
+            0%, 100% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(1.1); }
+        }
+        .radial-glow {
+            animation: pulse-radial 8s infinite alternate;
         }
 
-        /* Professional Inputs */
-        input, select, textarea {
-            background: rgba(30, 41, 59, 0.5) !important;
-            border: 1px solid var(--border-subtle) !important;
-            border-radius: 14px !important;
-            padding: 14px 18px !important;
-            font-size: 14px !important;
-            color: white !important;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        .input-premium {
+            background-color: #090d16;
+            border: 1px solid #1f2937;
+            border-radius: 0.75rem;
+            color: #ffffff;
+            font-size: 0.875rem;
+            transition: all 0.2s ease-in-out;
         }
-
-        input:focus {
-            border-color: var(--brand-primary) !important;
-            background: rgba(30, 41, 59, 0.8) !important;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
+        .input-premium:focus {
             outline: none;
-        }
-
-        /* Status Animations */
-        .dot-pulse {
-            position: relative;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: var(--brand-success);
-            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        .drawer-up {
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-
-        .btn-glow {
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-        }
-
-        .trade-card {
-            transition: transform 0.2s ease, background 0.2s ease;
-        }
-
-        .trade-card:active {
-            transform: scale(0.98);
-            background: rgba(30, 41, 59, 0.8);
+            border-color: #6366f1;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.15);
         }
     </style>
 </head>
-<body class="antialiased selection:bg-blue-500/30">
+<body class="flex flex-col min-h-screen">
+    <!-- Ambient Radial Glow -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none radial-glow z-0"></div>
 
-    <!-- SETUP OVERLAY -->
-    <div id="setupOverlay" class="fixed inset-0 bg-[#020617] z-[5000] flex items-center justify-center p-8 hidden">
-        <div class="max-w-sm w-full space-y-10 text-center">
-            <div class="inline-flex p-5 rounded-[2.5rem] bg-gradient-to-br from-blue-500 to-indigo-600 shadow-2xl shadow-blue-500/20">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            </div>
-            <div>
-                <h1 class="text-4xl font-extrabold tracking-tight mb-3">NEELX <span class="text-blue-500 italic">PRO</span></h1>
-                <p class="text-slate-400 text-sm leading-relaxed">Securely connect your proprietary ledger to synchronize institutional-grade analytics.</p>
-            </div>
-            <form id="setupForm" class="space-y-4">
-                <input type="url" id="setupUrl" placeholder="Paste Cloud Sync URL" required class="w-full text-center font-mono placeholder:text-slate-600">
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-5 rounded-2xl transition-all shadow-xl shadow-blue-600/20 uppercase tracking-widest text-xs">Initialize Node</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="app" class="max-w-md mx-auto min-h-screen relative pb-32">
-        <!-- HEADER -->
-        <header class="sticky top-0 z-[100] px-6 py-5 flex justify-between items-center bg-[#020617]/80 backdrop-blur-md border-b border-white/5">
+    <!-- Header -->
+    <header class="bg-gray-950/80 backdrop-blur-xl border-b border-gray-900 sticky top-0 z-50 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center font-black italic text-xs tracking-tighter">NX</div>
-                <span class="font-bold text-sm tracking-tight">NEELX PRO</span>
+                <div class="bg-gradient-to-br from-gray-900 to-gray-950 p-2.5 rounded-xl border border-gray-800 shadow-xl">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <rect x="3" y="10" width="4" height="6" rx="1" fill="#ef4444" />
+                        <line x1="5" y1="4" x2="5" y2="20" stroke="#ef4444" stroke-width="1.5"/>
+                        <rect x="10" y="5" width="4" height="12" rx="1" fill="#10b981" />
+                        <line x1="12" y1="2" x2="12" y2="22" stroke="#10b981" stroke-width="1.5"/>
+                        <rect x="17" y="11" width="4" height="5" rx="1" fill="#10b981" />
+                        <line x1="19" y1="6" x2="19" y2="18" stroke="#10b981" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-extrabold text-white tracking-tight flex items-center gap-2">
+                        NEELX <span class="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent font-black">PIPS</span>
+                        <span class="text-xs font-black bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-2 py-0.5 rounded-md">ADMIN TERMINAL</span>
+                    </h1>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Database & File Configuration Manager</p>
+                </div>
             </div>
-            <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
-                <div id="ui-sync-dot" class="dot-pulse"></div>
-                <span id="ui-sync-text" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">LIVE</span>
-            </div>
-        </header>
 
-        <!-- DASHBOARD -->
-        <main id="view-dashboard" class="px-6 pt-8 space-y-8 animate-in fade-in duration-700">
-            <!-- HERO BALANCE -->
-            <section class="text-center space-y-2">
-                <h4 class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em]">Equity Standing</h4>
-                <div class="relative inline-block">
-                    <p id="ui-balance" class="text-5xl font-extrabold tracking-tighter font-mono text-gradient">$0.00</p>
-                    <div class="absolute -right-4 -top-1 w-2 h-2 bg-blue-500 rounded-full blur-[2px]"></div>
-                </div>
-            </section>
-
-            <!-- STATS GRID -->
-            <section class="grid grid-cols-2 gap-4">
-                <div class="glass-card p-5 space-y-1">
-                    <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Net Realized</span>
-                    <p id="ui-total-pnl" class="text-xl font-mono font-bold text-emerald-400">$0.00</p>
-                </div>
-                <div class="glass-card p-5 space-y-1">
-                    <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Strike Rate</span>
-                    <p id="ui-winrate" class="text-xl font-mono font-bold text-blue-400">0%</p>
-                </div>
-            </section>
-
-            <!-- ANALYTICS RIBBON (NEW: Total, Wins, Losses) -->
-            <section class="grid grid-cols-3 gap-3">
-                <div class="glass-card bg-white/5 border-white/5 py-3 px-2 text-center">
-                    <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1">Total</p>
-                    <p id="ui-count-total" class="font-mono text-lg font-bold text-slate-200">0</p>
-                </div>
-                <div class="glass-card bg-emerald-500/5 border-emerald-500/10 py-3 px-2 text-center">
-                    <p class="text-[8px] font-black text-emerald-500/60 uppercase tracking-widest mb-1">Wins</p>
-                    <p id="ui-count-wins" class="font-mono text-lg font-bold text-emerald-400">0</p>
-                </div>
-                <div class="glass-card bg-rose-500/5 border-rose-500/10 py-3 px-2 text-center">
-                    <p class="text-[8px] font-black text-rose-500/60 uppercase tracking-widest mb-1">Losses</p>
-                    <p id="ui-count-losses" class="font-mono text-lg font-bold text-rose-400">0</p>
-                </div>
-            </section>
-
-            <!-- RECENT ACTIVITY -->
-            <section class="space-y-5">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Live Ledger</h3>
-                    <button onclick="switchView('history')" class="text-blue-500 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 transition-colors">Archive</button>
-                </div>
-                <div id="ui-recent-list" class="space-y-4">
-                    <!-- Dynamic Items -->
-                </div>
-            </section>
-        </main>
-
-        <!-- HISTORY VIEW -->
-        <main id="view-history" class="hidden px-6 pt-8 pb-10 space-y-6">
-            <div class="flex items-center gap-4 mb-2">
-                <button onclick="switchView('dashboard')" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            <!-- Import / Export Actions -->
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <label class="flex-1 sm:flex-initial text-center px-4 py-2.5 bg-gray-900 hover:bg-gray-800 border border-gray-800 rounded-xl text-xs font-extrabold text-gray-300 cursor-pointer transition-colors uppercase tracking-wider flex items-center justify-center gap-1.5">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    Import data.json
+                    <input type="file" id="fileInput" accept=".json" class="hidden" onchange="importJSONFile(event)">
+                </label>
+                <button onclick="exportJSONFile()" class="flex-1 sm:flex-initial px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 rounded-xl text-xs font-black text-white shadow-lg shadow-indigo-500/10 transition-all uppercase tracking-wider flex items-center justify-center gap-1.5">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Export data.json
                 </button>
-                <h2 class="text-2xl font-extrabold tracking-tight">Full Archive</h2>
             </div>
-            <div id="ui-full-history" class="space-y-4"></div>
-        </main>
-
-        <!-- SETTINGS VIEW -->
-        <main id="view-sync" class="hidden px-6 pt-8 space-y-6">
-            <h2 class="text-2xl font-extrabold tracking-tight mb-8">Node Configuration</h2>
-            <div class="glass-card p-6 space-y-8">
-                <div class="space-y-3">
-                    <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Base Liquidity</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="capitalInput" class="flex-1 font-mono text-center" placeholder="0.00">
-                        <button onclick="handleUpdateCapital()" class="bg-blue-600 text-white px-5 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-blue-500 transition-colors">Apply</button>
-                    </div>
-                </div>
-                
-                <div class="pt-6 border-t border-white/5 space-y-3">
-                    <button onclick="forceSync()" class="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-4 rounded-xl text-[10px] uppercase tracking-widest border border-white/10 transition-all">Request Node Sync</button>
-                    <button onclick="resetApp()" class="w-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 font-bold py-4 rounded-xl text-[10px] uppercase tracking-widest border border-rose-500/20 transition-all">Purge Session</button>
-                </div>
-            </div>
-        </main>
-
-        <!-- NAV BAR -->
-        <nav class="fixed bottom-0 left-0 right-0 h-24 glass-nav z-[1500] flex items-center justify-around px-8 pb-6">
-            <button onclick="switchView('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1.5 text-blue-500">
-                <div class="w-1.5 h-1.5 rounded-full bg-current mb-0.5 opacity-0 nav-dot"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-                <span class="text-[8px] font-black uppercase tracking-[0.2em]">Nodes</span>
-            </button>
-            <button onclick="switchView('history')" id="nav-history" class="flex flex-col items-center gap-1.5 text-slate-500">
-                <div class="w-1.5 h-1.5 rounded-full bg-current mb-0.5 opacity-0 nav-dot"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
-                <span class="text-[8px] font-black uppercase tracking-[0.2em]">Ledger</span>
-            </button>
-            <button onclick="switchView('sync')" id="nav-sync" class="flex flex-col items-center gap-1.5 text-slate-500">
-                <div class="w-1.5 h-1.5 rounded-full bg-current mb-0.5 opacity-0 nav-dot"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span class="text-[8px] font-black uppercase tracking-[0.2em]">Config</span>
-            </button>
-        </nav>
-
-        <!-- ADD ACTION BUTTON -->
-        <button onclick="toggleDrawer(true)" class="fixed bottom-28 right-8 w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-2xl shadow-blue-500/40 z-[2000] active:scale-90 transition-all btn-glow">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
-    </div>
-
-    <!-- LOG TRADE DRAWER -->
-    <div id="drawer" class="fixed inset-0 bg-[#020617]/80 backdrop-blur-md z-[3000] hidden flex items-end" onclick="event.target.id === 'drawer' && toggleDrawer(false)">
-        <div id="drawerContent" class="w-full bg-slate-900 rounded-t-[3rem] p-8 pb-12 border-t border-white/10 drawer-up translate-y-full shadow-[0_-20px_50px_rgba(0,0,0,0.5)]" onclick="event.stopPropagation()">
-            
-            <div class="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-8"></div>
-            <h3 class="text-2xl font-bold mb-8 text-center">New Execution</h3>
-
-            <form id="tradeForm" class="space-y-5">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Asset</label>
-                        <select name="pair" required class="w-full bg-slate-800">
-                            <option value="EURUSD">EURUSD</option>
-                            <option value="GBPUSD">GBPUSD</option>
-                            <option value="NAS100">NAS100</option>
-                            <option value="XAUUSD">XAUUSD</option>
-                            <option value="US30">US30</option>
-                        </select>
-                    </div>
-                    <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Bias</label>
-                        <select name="bias" class="w-full">
-                            <option value="Buy">Long / Buy</option>
-                            <option value="Sell">Short / Sell</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Lot Size</label>
-                        <input type="number" step="0.001" name="lots" placeholder="0.00" required class="w-full font-mono">
-                    </div>
-                    <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Risk Amount ($)</label>
-                        <input type="number" step="0.01" name="risk" placeholder="0.00" required class="w-full font-mono">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Type</label>
-                        <select name="resultType" class="w-full">
-                            <option value="Profit">Profit</option>
-                            <option value="Loss">Loss</option>
-                            <option value="BE">Break-even</option>
-                        </select>
-                    </div>
-                    <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Net PnL ($)</label>
-                        <input type="number" step="0.01" name="pnlValue" placeholder="0.00" required class="w-full font-mono">
-                    </div>
-                </div>
-
-                <div class="space-y-1.5">
-                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Trade Setup</label>
-                    <input type="text" name="setup" placeholder="e.g. MSS + FVG" class="w-full">
-                </div>
-
-                <button type="submit" id="logBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-5 rounded-2xl transition-all shadow-xl shadow-blue-600/20 uppercase tracking-[0.2em] text-xs mt-6">Commit to Ledger</button>
-            </form>
         </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-6 py-6 z-10 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left Panel: Live Sync Preview & General Settings -->
+        <div class="space-y-6 lg:col-span-1">
+            
+            <!-- General Settings Card -->
+            <div class="premium-card p-5 rounded-2xl border border-gray-900">
+                <h2 class="text-xs font-black text-indigo-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    General parameters
+                </h2>
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">Challenge Starting Capital ($)</label>
+                        <input type="number" id="inputInitialCap" value="200" oninput="updateInitialCapital(this.value)" class="w-full px-3 py-2 bg-gray-950 border border-gray-800 rounded-lg text-xs font-mono font-bold text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terminal Mock Simulation -->
+            <div class="premium-card p-5 rounded-2xl border border-gray-900 relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                        Live Dashboard Preview
+                    </h2>
+                    <span id="challengeStatusBadge" class="text-[8px] font-black px-1.5 py-0.5 rounded">Fetching...</span>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex justify-between items-baseline">
+                        <div>
+                            <p class="text-[8px] font-bold text-gray-500 uppercase tracking-wider">Projected Balance</p>
+                            <h3 id="previewBalance" class="text-2xl font-black text-white font-mono">$200.00</h3>
+                        </div>
+                        <span id="previewGrowth" class="text-xs font-mono font-extrabold text-gray-400">+0.00%</span>
+                    </div>
+
+                    <!-- Progress preview -->
+                    <div>
+                        <div class="flex justify-between text-[8px] font-bold text-gray-500 mb-1 uppercase tracking-wider">
+                            <span>Target progress ($200 to $500)</span>
+                            <span id="previewProgressPercent" class="text-indigo-400 font-mono">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-950 rounded-full h-1 border border-gray-900 overflow-hidden">
+                            <div id="previewProgressBar" class="bg-gradient-to-r from-indigo-500 to-emerald-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tiny Specs Table -->
+                    <div class="grid grid-cols-2 gap-2 pt-3 border-t border-gray-900/60 text-[10px]">
+                        <div>
+                            <span class="text-gray-500 block">Total profit:</span>
+                            <span id="previewNetProfit" class="font-bold font-mono text-gray-400">+$0.00</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-500 block">Total Win Rate:</span>
+                            <span id="previewWinRate" class="font-bold text-indigo-400">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Editor Mode Selector -->
+            <div class="premium-card p-4 rounded-2xl border border-gray-900 flex gap-1">
+                <button onclick="switchView('visual')" id="btnViewVisual" class="flex-1 text-center py-2 rounded-xl text-xs font-extrabold uppercase transition-all bg-indigo-600 text-white">Visual Panel</button>
+                <button onclick="switchView('code')" id="btnViewCode" class="flex-1 text-center py-2 rounded-xl text-xs font-extrabold uppercase transition-all text-gray-500 hover:text-white">Raw JSON</button>
+            </div>
+        </div>
+
+        <!-- Right Panel: Core Editors (Visual List or Code Editor) -->
+        <div class="lg:col-span-2 space-y-6">
+            
+            <!-- Raw Code Editor Block -->
+            <div id="codeEditorContainer" class="hidden premium-card p-5 rounded-2xl border border-gray-900 space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-black text-indigo-400 uppercase tracking-widest">Manual JSON Configuration</h3>
+                    <button onclick="validateAndApplyJSON()" class="px-3 py-1.5 bg-gray-900 hover:bg-gray-800 border border-indigo-500/20 text-indigo-400 hover:text-indigo-300 text-[10px] font-black uppercase rounded-lg transition-all">
+                        Validate & Apply changes
+                    </button>
+                </div>
+                <p class="text-[10px] text-gray-500">Paste your structured code directly here. The application validates constraints automatically.</p>
+                <textarea id="rawJSONTextarea" class="w-full h-96 p-4 bg-gray-950 border border-gray-900 rounded-xl text-xs font-mono text-gray-300 focus:outline-none focus:border-indigo-500" placeholder="{ ... }"></textarea>
+            </div>
+
+            <!-- Visual Trade Form & List Block -->
+            <div id="visualEditorContainer" class="space-y-6">
+                
+                <!-- Add New Trade Module -->
+                <div class="premium-card p-6 rounded-2xl border border-gray-900 space-y-4">
+                    <h3 class="text-xs font-black text-indigo-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Log a new pip trade
+                    </h3>
+                    
+                    <form id="tradeForm" onsubmit="addOrUpdateTrade(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <input type="hidden" id="formTradeId">
+                        
+                        <div>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">Asset *</label>
+                            <input type="text" id="formAsset" required placeholder="XAUUSD" class="w-full px-3 py-2 bg-gray-950 border border-gray-900 rounded-lg text-xs font-extrabold text-white uppercase placeholder-gray-700 focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">Execution Date *</label>
+                            <input type="date" id="formDate" required class="w-full px-3 py-2 bg-gray-950 border border-gray-900 rounded-lg text-xs text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">Status/Result</label>
+                            <select id="formResult" class="w-full px-3 py-2 bg-gray-950 border border-gray-900 rounded-lg text-xs font-extrabold text-white focus:outline-none focus:border-indigo-500">
+                                <option value="Win">Win</option>
+                                <option value="Loss">Loss</option>
+                                <option value="Running">Running</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">Entry Price</label>
+                            <input type="number" step="any" id="formEntry" placeholder="2345.50" class="w-full px-3 py-2 bg-gray-950 border border-gray-900 rounded-lg text-xs text-white font-mono placeholder-gray-800 focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">Stop Loss (SL)</label>
+                            <input type="number" step="any" id="formSL" placeholder="2338.00" class="w-full px-3 py-2 bg-gray-950 border border-gray-900 rounded-lg text-xs text-white font-mono placeholder-gray-800 focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">Exit / TP Price</label>
+                            <input type="number" step="any" id="formExit" placeholder="2362.10" class="w-full px-3 py-2 bg-gray-950 border border-gray-900 rounded-lg text-xs text-white font-mono placeholder-gray-800 focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">Risk Taken ($)</label>
+                            <input type="number" step="any" id="formSize" placeholder="150.00" class="w-full px-3 py-2 bg-gray-950 border border-gray-900 rounded-lg text-xs text-white font-mono placeholder-gray-800 focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">Execution P&L ($) *</label>
+                            <input type="number" step="any" id="formPnL" required placeholder="480.00" class="w-full px-3 py-2 bg-gray-950 border border-gray-900 rounded-lg text-xs text-white font-mono placeholder-gray-800 focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">Commission ($)</label>
+                            <input type="number" step="any" id="formCommission" placeholder="7.50" class="w-full px-3 py-2 bg-gray-950 border border-gray-900 rounded-lg text-xs text-white font-mono placeholder-gray-800 focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">R-Multiple (e.g., 2.2R)</label>
+                            <input type="text" id="formRMultiple" placeholder="2.2" class="w-full px-3 py-2 bg-gray-950 border border-gray-900 rounded-lg text-xs text-white font-mono placeholder-gray-800 focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">Pips count (e.g., +166)</label>
+                            <input type="number" id="formPips" placeholder="166" class="w-full px-3 py-2 bg-gray-950 border border-gray-900 rounded-lg text-xs text-white font-mono placeholder-gray-800 focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-1">Analysis / TradingView Link</label>
+                            <input type="url" id="formChart" placeholder="https://..." class="w-full px-3 py-2 bg-gray-950 border border-gray-900 rounded-lg text-xs text-white placeholder-gray-800 focus:outline-none focus:border-indigo-500">
+                        </div>
+
+                        <div class="sm:col-span-3 pt-3 flex gap-2">
+                            <button type="submit" id="btnSubmitForm" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs rounded-xl transition-all uppercase tracking-wider">
+                                Save Trade Log
+                            </button>
+                            <button type="button" id="btnCancelEdit" onclick="resetForm()" class="hidden px-4 py-3 bg-gray-900 hover:bg-gray-800 text-gray-400 font-extrabold text-xs rounded-xl transition-all uppercase tracking-wider">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Active Logs Managed List -->
+                <div class="premium-card p-6 rounded-2xl border border-gray-900">
+                    <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Logged Pip Entries</h3>
+                    <div id="adminTradeList" class="space-y-3">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Pop Warning Modal -->
+    <div id="toast" class="fixed bottom-6 right-6 px-4 py-3 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-extrabold rounded-xl shadow-2xl opacity-0 translate-y-2 pointer-events-none transition-all duration-300 uppercase tracking-wider flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="toastMessage">Updates Saved</span>
     </div>
 
     <script>
-        let state = { startingCapital: 0, trades: [], syncUrl: '' };
-        let isSyncing = false;
-
-        window.onload = () => {
-            const saved = localStorage.getItem('neelx_pro_session');
-            if (saved) {
-                state = JSON.parse(saved);
-                if (state.syncUrl) {
-                    hideSetup();
-                    forceSync();
-                } else { showSetup(); }
-            } else { showSetup(); }
-            renderApp();
+        // Default pristine template state (completely empty trades list)
+        let appData = {
+            initialCapital: 200,
+            trades: []
         };
 
-        function showSetup() { document.getElementById('setupOverlay').classList.remove('hidden'); }
-        function hideSetup() { document.getElementById('setupOverlay').classList.add('hidden'); }
-
-        function switchView(view) {
-            ['dashboard', 'history', 'sync'].forEach(v => {
-                const el = document.getElementById(`view-${v}`);
-                el.classList.toggle('hidden', v !== view);
-                
-                const nav = document.getElementById(`nav-${v}`);
-                nav.classList.toggle('text-blue-500', v === view);
-                nav.classList.toggle('text-slate-500', v !== view);
-                
-                const dot = nav.querySelector('.nav-dot');
-                dot.style.opacity = v === view ? '1' : '0';
-            });
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function toggleDrawer(show) {
-            const d = document.getElementById('drawer');
-            const c = document.getElementById('drawerContent');
-            if (show) {
-                d.classList.remove('hidden');
-                setTimeout(() => c.classList.remove('translate-y-full'), 10);
-            } else {
-                c.classList.add('translate-y-full');
-                setTimeout(() => d.classList.add('hidden'), 500);
-            }
-        }
-
-        document.getElementById('setupForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const url = document.getElementById('setupUrl').value.trim();
-            state.syncUrl = url;
-            const ok = await forceSync();
-            if (ok) { hideSetup(); saveState(); }
-        };
-
-        async function forceSync() {
-            if (!state.syncUrl || isSyncing) return false;
-            updateSyncStatus('syncing', 'Syncing...');
-            isSyncing = true;
+        // Try reading existing file if available on start
+        async function fetchInitialJSON() {
             try {
-                const res = await fetch(`${state.syncUrl}?action=fetch`);
-                const data = await res.json();
-                if (data.result === 'success') {
-                    state.trades = data.trades || [];
-                    state.startingCapital = parseFloat(data.startingCapital || 0);
-                    saveState();
-                    renderApp();
-                    updateSyncStatus('active', 'Live');
-                    return true;
+                const res = await fetch(`data.json?t=${Date.now()}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && (data.trades || data.initialCapital)) {
+                        appData = data;
+                        showToast("Loaded existing data.json!");
+                    }
                 }
             } catch (e) {
-                updateSyncStatus('error', 'Sync Failed');
-                return false;
-            } finally { isSyncing = false; }
+                console.warn("No active data.json file found, initializing empty database.");
+            }
+            syncEditorData();
         }
 
-        async function handleUpdateCapital() {
-            const val = parseFloat(document.getElementById('capitalInput').value);
-            if (isNaN(val)) return;
-            state.startingCapital = val;
-            saveState();
-            renderApp();
-            try {
-                fetch(state.syncUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify({ action: 'updateCapital', value: val })
-                });
-            } catch(e) {}
+        // Keep local interface aligned with our core appData state
+        function syncEditorData() {
+            document.getElementById('inputInitialCap').value = appData.initialCapital;
+            document.getElementById('rawJSONTextarea').value = JSON.stringify(appData, null, 4);
+            calculateDashboardPreview();
+            renderVisualList();
         }
 
-        document.getElementById('tradeForm').onsubmit = async (e) => {
+        // Show feedback overlay
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = message;
+            toast.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // Process file imports
+        function importJSONFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (!parsed.trades) parsed.trades = [];
+                    if (typeof parsed.initialCapital === "undefined") parsed.initialCapital = 200;
+                    
+                    appData = parsed;
+                    syncEditorData();
+                    showToast("Import successful");
+                } catch(err) {
+                    alert("Invalid JSON format. Please verify file integrity.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Generate data.json for client storage download
+        function exportJSONFile() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 4));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "data.json");
+            dlAnchorElem.click();
+            showToast("Downloaded data.json");
+        }
+
+        function updateInitialCapital(val) {
+            appData.initialCapital = parseFloat(val) || 0;
+            appData.initialCapital = Math.max(0, appData.initialCapital);
+            document.getElementById('rawJSONTextarea').value = JSON.stringify(appData, null, 4);
+            calculateDashboardPreview();
+        }
+
+        // Form Submission logic
+        function addOrUpdateTrade(e) {
             e.preventDefault();
-            const btn = document.getElementById('logBtn');
-            btn.innerHTML = `<span class="animate-pulse">COMMITTING...</span>`;
-            btn.disabled = true;
+            
+            const tradeId = document.getElementById('formTradeId').value;
+            const asset = document.getElementById('formAsset').value.toUpperCase().trim();
+            const date = document.getElementById('formDate').value;
+            const result = document.getElementById('formResult').value;
+            const entry = document.getElementById('formEntry').value;
+            const sl = document.getElementById('formSL').value;
+            const exit = document.getElementById('formExit').value;
+            const size = document.getElementById('formSize').value;
+            const pnl = document.getElementById('formPnL').value;
+            const commission = document.getElementById('formCommission').value;
+            const r_multiple = document.getElementById('formRMultiple').value;
+            const pips = document.getElementById('formPips').value;
+            const chart = document.getElementById('formChart').value.trim();
 
-            const fd = new FormData(e.target);
-            const trade = {
-                id: Date.now(),
-                timestamp: new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'short'}) + ' ' + new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'}),
-                pair: fd.get('pair'),
-                bias: fd.get('bias'),
-                lots: fd.get('lots'),
-                risk: parseFloat(fd.get('risk')),
-                resultType: fd.get('resultType'),
-                pnlValue: parseFloat(fd.get('pnlValue')),
-                setup: fd.get('setup') || 'Standard'
+            const tradeObj = {
+                id: tradeId || "t-" + Date.now(),
+                asset,
+                date,
+                entry,
+                exit,
+                sl,
+                tp: exit,
+                size,
+                commission,
+                pnl,
+                result,
+                r_multiple,
+                pips,
+                chart
             };
 
-            state.trades.push(trade);
-            saveState();
-            renderApp();
-            
-            try {
-                await fetch(state.syncUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify({ action: 'addTrade', ...trade })
-                });
-                toggleDrawer(false);
-                e.target.reset();
-            } catch(err) {}
-            
-            btn.textContent = "COMMIT TO LEDGER";
-            btn.disabled = false;
-        };
+            if (tradeId) {
+                // Update
+                const index = appData.trades.findIndex(t => t.id === tradeId);
+                if (index !== -1) appData.trades[index] = tradeObj;
+                showToast("Trade updated");
+            } else {
+                // New Add
+                appData.trades.unshift(tradeObj);
+                showToast("Trade added");
+            }
 
-        function resetApp() {
-            if(confirm("Purge local session and disconnect node?")) {
-                localStorage.removeItem('neelx_pro_session');
-                location.reload();
+            resetForm();
+            syncEditorData();
+        }
+
+        function resetForm() {
+            document.getElementById('tradeForm').reset();
+            document.getElementById('formTradeId').value = "";
+            document.getElementById('btnSubmitForm').innerText = "Save Trade Log";
+            document.getElementById('btnCancelEdit').classList.add('hidden');
+        }
+
+        // Set form to edit existing trade
+        function editTrade(id) {
+            const trade = appData.trades.find(t => t.id === id);
+            if (!trade) return;
+
+            document.getElementById('formTradeId').value = trade.id;
+            document.getElementById('formAsset').value = trade.asset;
+            document.getElementById('formDate').value = trade.date;
+            document.getElementById('formResult').value = trade.result || "Win";
+            document.getElementById('formEntry').value = trade.entry || "";
+            document.getElementById('formSL').value = trade.sl || "";
+            document.getElementById('formExit').value = trade.exit || "";
+            document.getElementById('formSize').value = trade.size || "";
+            document.getElementById('formPnL').value = trade.pnl || "";
+            document.getElementById('formCommission').value = trade.commission || "";
+            document.getElementById('formRMultiple').value = trade.r_multiple || "";
+            document.getElementById('formPips').value = trade.pips || "";
+            document.getElementById('formChart').value = trade.chart || "";
+
+            document.getElementById('btnSubmitForm').innerText = "Update Trade Log";
+            document.getElementById('btnCancelEdit').classList.remove('hidden');
+            
+            // Scroll visually to the edit block on mobile devices gracefully
+            document.getElementById('tradeForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteTrade(id) {
+            if (!confirm("Are you sure you want to delete this pip entry?")) return;
+            appData.trades = appData.trades.filter(t => t.id !== id);
+            syncEditorData();
+            showToast("Trade deleted");
+        }
+
+        // Render visual manager items list
+        function renderVisualList() {
+            const listEl = document.getElementById('adminTradeList');
+            listEl.innerHTML = "";
+
+            if (appData.trades.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-6 text-gray-600 text-xs uppercase tracking-wider font-mono">
+                        No trade logs in dataset
+                    </div>
+                `;
+                return;
+            }
+
+            appData.trades.forEach(t => {
+                const isRunning = t.result === 'Running';
+                let tagClass = "bg-slate-500/10 text-slate-400 border border-slate-500/20";
+                if (isRunning) tagClass = "bg-blue-500/10 text-blue-400 border border-blue-500/20";
+                else if (t.result === 'Win') tagClass = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                else if (t.result === 'Loss') tagClass = "bg-rose-500/10 text-rose-400 border border-rose-500/20";
+
+                const card = document.createElement('div');
+                card.className = "flex justify-between items-center p-4 bg-gray-950/60 border border-gray-900 rounded-xl gap-4";
+                card.innerHTML = `
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="font-black text-sm text-white">${t.asset}</span>
+                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${tagClass}">${t.result || 'Closed'}</span>
+                            ${t.pips ? `<span class="text-[9px] font-mono font-bold text-indigo-400 bg-indigo-500/5 border border-indigo-500/10 px-1.5 py-0.2 rounded">${t.pips > 0 ? '+' : ''}${t.pips} pips</span>` : ''}
+                        </div>
+                        <div class="text-[10px] text-gray-500 font-mono mt-1">
+                            ${t.date} • Entry: ${t.entry || '---'} • P&L: $${parseFloat(t.pnl || 0).toFixed(2)}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="editTrade('${t.id}')" class="p-2 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 text-indigo-400 hover:text-indigo-300 rounded-lg text-xs font-bold transition-all">
+                            Edit
+                        </button>
+                        <button onclick="deleteTrade('${t.id}')" class="p-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 hover:text-rose-300 rounded-lg text-xs font-bold transition-all">
+                            Delete
+                        </button>
+                    </div>
+                `;
+                listEl.appendChild(card);
+            });
+        }
+
+        // Live calculation matching client formula requirements
+        function calculateDashboardPreview() {
+            let net = 0, wins = 0, losses = 0;
+            appData.trades.forEach(t => {
+                const pnl = parseFloat(t.pnl) || 0;
+                const fee = parseFloat(t.commission) || 0;
+                net += (pnl - fee);
+                if (t.result === 'Win') wins++;
+                else if (t.result === 'Loss') losses++;
+            });
+
+            const current = appData.initialCapital + net;
+            const growth = appData.initialCapital > 0 ? ((net / appData.initialCapital) * 100).toFixed(2) : "0.00";
+            
+            document.getElementById('previewBalance').innerText = `$${current.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+            
+            const previewGrowth = document.getElementById('previewGrowth');
+            previewGrowth.innerText = `${net >= 0 ? '+' : ''}${growth}%`;
+            previewGrowth.className = `text-xs font-mono font-bold ${net > 0 ? 'text-emerald-400' : (net < 0 ? 'text-rose-400' : 'text-gray-400')}`;
+
+            const previewNet = document.getElementById('previewNetProfit');
+            previewNet.innerText = `${net >= 0 ? '+' : ''}$${net.toFixed(2)}`;
+            previewNet.className = `font-bold font-mono ${net > 0 ? 'text-emerald-400' : (net < 0 ? 'text-rose-400' : 'text-gray-400')}`;
+
+            const totalRated = wins + losses;
+            const wr = totalRated > 0 ? ((wins / totalRated) * 100).toFixed(0) : 0;
+            document.getElementById('previewWinRate').innerText = `${wr}%`;
+
+            // Challenge bounds ($200 to $500 target status)
+            const startAmt = 200;
+            const targetAmt = 500;
+            const badge = document.getElementById('challengeStatusBadge');
+            
+            if (current >= targetAmt) {
+                badge.innerText = "PASSED";
+                badge.className = "text-[8px] font-black px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider animate-pulse";
+            } else {
+                badge.innerText = "ONGOING";
+                badge.className = "text-[8px] font-black px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase tracking-wider";
+            }
+
+            // Progress bar
+            const range = targetAmt - startAmt;
+            const gained = current - startAmt;
+            let progressPercent = 0;
+            if (gained > 0) {
+                progressPercent = Math.min(100, Math.round((gained / range) * 100));
+            }
+            if (progressPercent < 0) progressPercent = 0;
+
+            document.getElementById('previewProgressPercent').innerText = `${progressPercent}%`;
+            document.getElementById('previewProgressBar').style.width = `${progressPercent}%`;
+        }
+
+        // Validate and apply code alterations from textarea
+        function validateAndApplyJSON() {
+            const rawText = document.getElementById('rawJSONTextarea').value;
+            try {
+                const parsed = JSON.parse(rawText);
+                if (!parsed.hasOwnProperty('trades') || !Array.isArray(parsed.trades)) {
+                    alert("Validation Error: JSON must contain a root 'trades' list array.");
+                    return;
+                }
+                if (typeof parsed.initialCapital === "undefined") {
+                    parsed.initialCapital = 200;
+                }
+                appData = parsed;
+                syncEditorData();
+                showToast("JSON validated & applied");
+            } catch(e) {
+                alert("JSON syntax evaluation error. Please check formatting.");
             }
         }
 
-        function saveState() {
-            localStorage.setItem('neelx_pro_session', JSON.stringify(state));
+        // Toggle panel views
+        function switchView(view) {
+            const visualContainer = document.getElementById('visualEditorContainer');
+            const codeContainer = document.getElementById('codeEditorContainer');
+            const btnVisual = document.getElementById('btnViewVisual');
+            const btnCode = document.getElementById('btnViewCode');
+
+            if (view === 'visual') {
+                visualContainer.classList.remove('hidden');
+                codeContainer.classList.add('hidden');
+                btnVisual.className = "flex-1 text-center py-2 rounded-xl text-xs font-extrabold uppercase transition-all bg-indigo-600 text-white";
+                btnCode.className = "flex-1 text-center py-2 rounded-xl text-xs font-extrabold uppercase transition-all text-gray-500 hover:text-white";
+            } else {
+                visualContainer.classList.add('hidden');
+                codeContainer.classList.remove('hidden');
+                btnVisual.className = "flex-1 text-center py-2 rounded-xl text-xs font-extrabold uppercase transition-all text-gray-500 hover:text-white";
+                btnCode.className = "flex-1 text-center py-2 rounded-xl text-xs font-extrabold uppercase transition-all bg-indigo-600 text-white";
+            }
         }
 
-        function updateSyncStatus(type, text) {
-            const dot = document.getElementById('ui-sync-dot');
-            const txt = document.getElementById('ui-sync-text');
-            dot.className = type === 'active' ? 'dot-pulse' : (type === 'syncing' ? 'w-2 h-2 rounded-full bg-amber-500 animate-pulse' : 'w-2 h-2 rounded-full bg-rose-500');
-            txt.textContent = text;
-        }
-
-        function renderApp() {
-            const recentList = document.getElementById('ui-recent-list');
-            const fullHistory = document.getElementById('ui-full-history');
-            recentList.innerHTML = '';
-            fullHistory.innerHTML = '';
-
-            const sortedTrades = [...state.trades].sort((a,b) => b.id - a.id);
-            let totalPnl = 0;
-            let wins = 0;
-            let losses = 0;
-
-            sortedTrades.forEach((t, i) => {
-                const isProfit = t.resultType === 'Profit';
-                const isLoss = t.resultType === 'Loss';
-                const isBE = t.resultType === 'BE';
-                const pnlClass = isBE ? 'text-slate-400' : (isProfit ? 'text-emerald-400' : 'text-rose-400');
-                const sign = isBE ? '' : (isProfit ? '+' : '-');
-
-                if(isProfit) { totalPnl += Number(t.pnlValue); wins++; }
-                else if(isLoss) { totalPnl -= Number(t.pnlValue); losses++; }
-
-                const itemHtml = `
-                    <div class="glass-card p-5 space-y-4 trade-card">
-                        <div class="flex justify-between items-start">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 font-bold text-xs text-blue-400">
-                                    ${t.pair.substring(0,2)}
-                                </div>
-                                <div class="space-y-0.5">
-                                    <div class="flex items-center gap-2">
-                                        <p class="font-bold text-sm leading-none">${t.pair}</p>
-                                        <span class="text-[8px] px-1.5 py-0.5 rounded-md bg-blue-500/20 text-blue-400 font-black uppercase tracking-tighter">${t.bias}</span>
-                                    </div>
-                                    <p class="text-[9px] text-slate-500 font-mono">${t.timestamp}</p>
-                                </div>
-                            </div>
-                            <div class="text-right space-y-0.5">
-                                <p class="font-mono text-sm font-bold ${pnlClass}">${sign}$${Math.abs(t.pnlValue).toFixed(2)}</p>
-                                <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest">Realized</p>
-                            </div>
-                        </div>
-                        
-                        <div class="grid grid-cols-3 gap-2 pt-4 border-t border-white/5">
-                            <div class="space-y-0.5">
-                                <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest">Position</p>
-                                <p class="text-[10px] font-mono font-bold text-slate-300">${t.lots || '0.00'}</p>
-                            </div>
-                            <div class="space-y-0.5 text-center">
-                                <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest">At Risk</p>
-                                <p class="text-[10px] font-mono font-bold text-slate-300">$${t.risk || '0.00'}</p>
-                            </div>
-                            <div class="space-y-0.5 text-right">
-                                <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest">Strategy</p>
-                                <p class="text-[10px] font-bold text-blue-400 truncate">${t.setup || 'CORE'}</p>
-                            </div>
-                        </div>
-                    </div>`;
-
-                if(i < 5) recentList.insertAdjacentHTML('beforeend', itemHtml);
-                fullHistory.insertAdjacentHTML('beforeend', itemHtml);
-            });
-
-            const balance = state.startingCapital + totalPnl;
-            const wr = state.trades.length > 0 ? ((wins / state.trades.length) * 100).toFixed(0) : 0;
-
-            // Stats Update
-            document.getElementById('ui-balance').textContent = `$${balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-            document.getElementById('ui-total-pnl').textContent = `${totalPnl >= 0 ? '+' : '-'}$${Math.abs(totalPnl).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-            document.getElementById('ui-total-pnl').className = `text-xl font-mono font-bold ${totalPnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
-            document.getElementById('ui-winrate').textContent = `${wr}%`;
-            
-            // Analytics Ribbon Update
-            document.getElementById('ui-count-total').textContent = state.trades.length;
-            document.getElementById('ui-count-wins').textContent = wins;
-            document.getElementById('ui-count-losses').textContent = losses;
-            
-            document.getElementById('capitalInput').value = state.startingCapital;
-        }
+        window.onload = function() {
+            // Set input date default to today
+            document.getElementById('formDate').value = new Date().toISOString().split('T')[0];
+            fetchInitialJSON();
+        };
     </script>
 </body>
 </html>
